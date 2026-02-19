@@ -1,0 +1,27 @@
+[
+  {
+    "id": "06f5aae7-52ea-4dba-91ff-f843331f0ae8",
+    "email": "goal4utv@gmail.com",
+    "password": "$2b$10$jubtZ1ICNZ9XjV1ymFg3i.vHV7xMC8JooqUaDnrWC5X6AaQMsXItq",
+    "name": "dev",
+    "role": "customer",
+    "phone": "9642027908",
+    "address": {
+      "doorNo": "2-24-18",
+      "area": "krishnababu coloony",
+      "landmark": "near holy churych",
+      "city": "Guntur",
+      "state": "Andhra Pradesh",
+      "country": "India",
+      "zip": "522004"
+    },
+    "image": "/profile_pics/1.png"
+  },
+  {
+    "id": "ba7bd8e1-6606-40ba-847d-07292eb6bd5a",
+    "email": "gowrapavankumar2004@gmail.com",
+    "password": "$2b$10$fP6pZ64BQeYl9v5LUeyo0uSX5KE0jhDDMgBi6vupKMZMxGDG30hya",
+    "name": "dev",
+    "role": "customer"
+  }
+]

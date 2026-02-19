@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON Address Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; background: #fdfdfd; }
+        .form-card { max-width: 450px; margin: auto; background: white; padding: 30px; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h2 { color: #C2185B; border-bottom: 2px solid #C2185B; padding-bottom: 10px; margin-bottom: 20px; font-size: 18px; }
+        label { display: block; font-size: 11px; font-weight: bold; color: #777; text-transform: uppercase; margin-bottom: 5px; }
+        select { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px; outline: none; }
+        select:focus { border-color: #C2185B; }
+        select:disabled { background: #f5f5f5; cursor: not-allowed; }
+        .loader { font-size: 12px; color: #C2185B; display: none; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h2>Professional Address Selector</h2>
+    <div id="loadingMsg" class="loader">Processing large data...</div>
+
+    <label>Country</label>
+    <select id="countrySelect">
+        <option value="">-- Select Country --</option>
+    </select>
+
+    <label>State</label>
+    <select id="stateSelect" disabled>
+        <option value="">-- Select Country First --</option>
+    </select>
+
+    <label>City / Town</label>
+    <select id="citySelect" disabled>
+        <option value="">-- Select State First --</option>
+    </select>
+</div>
+
+<script>
+    const countryEl = document.getElementById('countrySelect');
+    const stateEl = document.getElementById('stateSelect');
+    const cityEl = document.getElementById('citySelect');
+    const loader = document.getElementById('loadingMsg');
+
+    // 1. Initial Load: Get Countries
+    async function loadCountries() {
+        try {
+            const response = await fetch('countries.json'); // Uses your countries.json
+            const countries = await response.json();
+            
+            countries.forEach(c => {
+                const opt = new Option(c.name, c.id);
+                countryEl.add(opt);
+            });
+        } catch (e) { console.error("Error loading countries.json", e); }
+    }
+
+    // 2. Load States when Country changes
+    countryEl.addEventListener('change', async function() {
+        stateEl.innerHTML = '<option value="">-- Loading States --</option>';
+        cityEl.innerHTML = '<option value="">-- Select State First --</option>';
+        stateEl.disabled = true;
+        cityEl.disabled = true;
+
+        if (!this.value) return;
+
+        try {
+            const response = await fetch('countries+states.json'); // Uses your country+state.json
+            const data = await response.json();
+            
+            // Find the specific country entry in your JSON
+            const countryEntry = data.find(c => c.name === this.options[this.selectedIndex].text);
+            
+            stateEl.innerHTML = '<option value="">-- Select State --</option>';
+            if (countryEntry && countryEntry.states) {
+                countryEntry.states.forEach(stateName => {
+                    // Note: Since your country+state.json is just names, we use name as value
+                    stateEl.add(new Option(stateName, stateName));
+                });
+                stateEl.disabled = false;
+            }
+        } catch (e) { console.error("Error loading states", e); }
+    });
+
+    // 3. Load Cities when State changes (Uses the 36MB file)
+    stateEl.addEventListener('change', async function() {
+        cityEl.innerHTML = '<option value="">-- Filtering Cities... --</option>';
+        cityEl.disabled = true;
+        loader.style.display = 'block'; // Show loader for the 36MB file
+
+        if (!this.value) return;
+
+        try {
+            // Fetch the large master file
+            const response = await fetch('countries+states+cities.json'); 
+            const data = await response.json();
+            
+            const selectedCountryName = countryEl.options[countryEl.selectedIndex].text;
+            const selectedStateName = this.value;
+
+            // Drill down: Country -> State -> Cities
+            const countryObj = data.find(c => c.name === selectedCountryName);
+            const stateObj = countryObj.states.find(s => s.name === selectedStateName);
+
+            cityEl.innerHTML = '<option value="">-- Select City --</option>';
+            if (stateObj && stateObj.cities) {
+                stateObj.cities.forEach(city => {
+                    cityEl.add(new Option(city.name, city.id));
+                });
+                cityEl.disabled = false;
+            }
+        } catch (e) { console.error("Error loading cities", e); }
+        finally { loader.style.display = 'none'; }
+    });
+
+    loadCountries();
+</script>
+
+</body>
+</html>

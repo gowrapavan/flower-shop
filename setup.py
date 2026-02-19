@@ -1,83 +1,107 @@
 import os
 
-# Define the folder structure and files to create
+# Define the perfect project structure
+# 'data' goes in Root. Everything else goes in 'src'.
 structure = {
+    # --- ROOT LEVEL (Database) ---
     "data": [
         ("products.json", "[]"),
         ("users.json", "[]"),
         ("categories.json", "[]")
     ],
-    "types": [
-        ("index.ts", "// Define your TypeScript interfaces here (Product, User, etc.)")
+
+    # --- SRC LEVEL (Code) ---
+    "src/types": [
+        ("index.ts", "// TypeScript Interfaces")
     ],
-    "lib": [
-        ("db.ts", "// JSON Database logic here"),
-        ("auth.ts", "// JWT Authentication logic here"),
-        ("utils.ts", "// Helper functions")
+    
+    "src/lib": [
+        ("db.ts", "// Database Logic"),
+        ("auth.ts", "// Authentication Logic"),
+        ("utils.ts", "// Utility Functions")
     ],
-    "context": [
-        ("CartContext.tsx", "// Cart State Management Context")
+    
+    "src/context": [
+        ("CartContext.tsx", "// Cart Context Provider")
     ],
-    "components/layout": [
-        ("Header.tsx", "// Header Component"),
+    
+    "src/components/layout": [
+        ("Header.tsx", "// Sticky Header Component"),
         ("Footer.tsx", "// Footer Component")
     ],
-    "components/product": [
-        ("ProductCard.tsx", "// Product Card Component"),
-        ("ProductGallery.tsx", "// Product Image Gallery"),
-        ("ProductTabs.tsx", "// Description/Reviews Tabs")
+    
+    "src/components/product": [
+        ("ProductCard.tsx", "// Grid Item Card"),
+        ("ProductGallery.tsx", "// Image Gallery for Details"),
+        ("ProductTabs.tsx", "// Description & Review Tabs")
     ],
-    "components/ui": [
-        ("Button.tsx", "// Reusable Button Component")
+    
+    "src/components/ui": [
+        ("Button.tsx", "// Reusable UI Button")
     ],
-    "app/shop": [
-        ("page.tsx", "// Shop / Category Page")
+
+    # --- APP ROUTER PAGES ---
+    "src/app/shop": [
+        ("page.tsx", "// Main Shop Page")
     ],
-    "app/product/[id]": [
+    
+    "src/app/product/[id]": [
         ("page.tsx", "// Product Detail Page")
     ],
-    "app/api/products": [
-        ("route.ts", "// API Route for getting products")
-    ],
-    "app/api/auth/login": [
-        ("route.ts", "// API Route for Login")
-    ],
-    "app/api/auth/register": [
-        ("route.ts", "// API Route for Registration")
-    ],
-    "app/account": [
+    
+    "src/app/account": [
         ("page.tsx", "// User Account Page")
+    ],
+    
+    "src/app/cart": [
+        ("page.tsx", "// Cart Page")
+    ],
+
+    # --- API ROUTES ---
+    "src/app/api/products": [
+        ("route.ts", "// API: Get Products")
+    ],
+    
+    "src/app/api/auth/login": [
+        ("route.ts", "// API: Login User")
+    ],
+    
+    "src/app/api/auth/register": [
+        ("route.ts", "// API: Register User")
     ]
 }
 
-def create_structure():
-    print("🚀 Starting project scaffolding...")
-    
+def create_project_structure():
+    print("🚀 Starting Project Scaffolding for 'src/' directory...")
+    base_path = os.getcwd()
+
     for folder, files in structure.items():
-        # Create the directory if it doesn't exist
+        # Create the folder path
+        full_folder_path = os.path.join(base_path, folder)
+        
         try:
-            os.makedirs(folder, exist_ok=True)
-            print(f"✅ Created folder: {folder}")
+            os.makedirs(full_folder_path, exist_ok=True)
+            print(f"✅ Folder: {folder}")
         except Exception as e:
             print(f"❌ Error creating folder {folder}: {e}")
             continue
 
-        # Create files within the directory
-        for filename, content in files:
-            file_path = os.path.join(folder, filename)
+        # Create the files inside the folder
+        for filename, initial_content in files:
+            file_path = os.path.join(full_folder_path, filename)
             
-            # Only create if it doesn't exist to avoid overwriting work
+            # Only create if it doesn't exist (to prevent overwriting work)
             if not os.path.exists(file_path):
                 try:
                     with open(file_path, "w", encoding="utf-8") as f:
-                        f.write(content)
-                    print(f"   📄 Created file: {file_path}")
+                        f.write(initial_content)
+                    print(f"   📄 Created: {filename}")
                 except Exception as e:
-                    print(f"   ❌ Error writing file {file_path}: {e}")
+                    print(f"   ❌ Error creating file {filename}: {e}")
             else:
-                print(f"   ⚠️ Skipped (already exists): {file_path}")
+                print(f"   ⚠️ Skipped (already exists): {filename}")
 
-    print("\n✨ Scaffolding complete! You can now copy-paste your code.")
+    print("\n✨ Scaffolding Complete! You can now start copy-pasting code.")
 
 if __name__ == "__main__":
-    create_structure()
+    create_project_structure()
