@@ -56,7 +56,7 @@ export default function CartClient() {
         
         <div className="bg-white p-8 rounded-2xl h-fit border border-gray-100 shadow-lg sticky top-24">
           <h3 className="font-serif text-xl font-bold text-gray-900 mb-6 flex items-center gap-2 border-b pb-4">
-            <開CreditCard size={20} className="text-floral-magenta" /> Summary
+            <CreditCard size={20} className="text-floral-magenta" /> Summary
           </h3>
           
           <div className="space-y-4 mb-8">
