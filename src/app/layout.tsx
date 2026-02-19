@@ -6,7 +6,6 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/context/CartContext";
 
-import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
