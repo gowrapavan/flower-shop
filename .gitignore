@@ -39,3 +39,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Dependencies
+node_modules/
+
+# Next.js Build Output
+.next/
+out/
+
+# Environment Variables (Crucial for security!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS Metadata
+.DS_Store
+Thumbs.db
