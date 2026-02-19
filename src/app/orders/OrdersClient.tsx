@@ -112,8 +112,9 @@ export default function OrdersClient() {
                 </div>
                 <div className="bg-gray-50/50 p-4 sm:px-6 border-t border-gray-100 text-xs text-gray-600 flex items-start gap-2">
                   <MapPin size={16} className="text-gray-400 flex-shrink-0 mt-0.5" />
-                  <p><span className="font-bold text-gray-800">Shipped to:</span> {order.shipping_address.doorNo}, {order.shipping_address.area}, {order.shipping_address.city}, {order.shipping_address.zip}</p>
-                </div>
+<p>
+  <span className="font-bold text-gray-800">Shipped to:</span> {order.shipping_address?.doorNo}, {order.shipping_address?.area}, {order.shipping_address?.city}, {order.shipping_address?.zip}
+</p>                </div>
               </div>
             ))}
           </div>
